@@ -15,6 +15,9 @@ import kotlin.random.Random
 import androidx.compose.ui.tooling.preview.Preview
 import carvalho.zanini.ponderada1.ui.theme.Ponderada1Theme
 
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,7 @@ class MainActivity : ComponentActivity() {
 fun LancadorDeDadosApp() {
     var dadoSelecionado by remember { mutableStateOf("D6") }
     var resultado by remember { mutableStateOf("Clique no botão para lançar o dado") }
+    var imagemDado by remember { mutableStateOf(R.drawable.dice_six_faces_one) }
 
     val dados = listOf("D6", "D10", "D20", "D100")
 
@@ -64,13 +68,29 @@ fun LancadorDeDadosApp() {
         Button(
             onClick = {
                 val valorSorteado = when (dadoSelecionado) {
-                    "D6" -> Random.nextInt(1, 7)
-                    "D10" -> Random.nextInt(1, 11)
-                    "D20" -> Random.nextInt(1, 21)
-                    "D100" -> Random.nextInt(1, 101)
 
+                    "D6" -> {
+                        val numero = Random.nextInt(1, 7)
 
-                    else -> 0
+                        imagemDado = when (numero) {
+                            1 -> R.drawable.dice_six_faces_one
+                            2 -> R.drawable.dice_six_faces_two
+                            3 -> R.drawable.dice_six_faces_three
+                            4 -> R.drawable.dice_six_faces_four
+                            5 -> R.drawable.dice_six_faces_five
+                            else -> R.drawable.dice_six_faces_six
+                        }
+
+                        "Resultado visual do D6"
+                    }
+
+                    "D10" -> Random.nextInt(1, 11).toString()
+
+                    "D20" -> Random.nextInt(1, 21).toString()
+
+                    "D100" -> Random.nextInt(1, 101).toString()
+
+                    else -> "0"
                 }
 
                 resultado = "Resultado do $dadoSelecionado: $valorSorteado"
@@ -82,9 +102,21 @@ fun LancadorDeDadosApp() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
-            text = resultado,
-            fontSize = 20.sp
-        )
+
+        if (dadoSelecionado == "D6") {
+
+            Image(
+                painter = painterResource(id = imagemDado),
+                contentDescription = "Face do dado",
+                modifier = Modifier.size(200.dp)
+            )
+
+        } else {
+
+            Text(
+                text = resultado,
+                fontSize = 20.sp
+            )
+        }
     }
 }
