@@ -57,7 +57,13 @@ fun LancadorDeDadosApp() {
             ) {
                 RadioButton(
                     selected = dadoSelecionado == dado,
-                    onClick = { dadoSelecionado = dado }
+                    onClick = {
+                        dadoSelecionado = dado
+
+                        resultado = "Clique no botão para lançar o dado"
+
+                        imagemDado = R.drawable.dice_six_faces_one
+                    }
                 )
                 Text(text = dado)
             }
